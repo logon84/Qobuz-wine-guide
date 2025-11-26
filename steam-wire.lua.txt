@@ -1,0 +1,168 @@
+--IMPORTANT!!! PLACE THIS FILE IN "$HOME/.config/wireplumber/scripts/" folder.
+--Original file from https://github.com/Widowan/steam-wire/ modified for autoconnecting wine ports to speakers sink, while the rest of apps are muted to the default null sink. With this we simulate wine exclusive mode. 
+
+------------
+--- Misc ---
+------------
+local log = Log
+
+function link_ports(input_port, output_port)
+  log:trace("Linking ports " .. dump_port(input_port) .. " and " .. dump_port(output_port))
+
+  if not input_port or not output_port then
+    log:warning("One of the ports is nil, won't link")
+    return
+  end
+
+  local link_args = {
+    ["link.input.node"]  = input_port.properties["node.id"],
+    ["link.input.port"]  = input_port.properties["object.id"],
+    ["link.output.node"] = output_port.properties["node.id"],
+    ["link.output.port"] = output_port.properties["object.id"],
+    ["object.id"]        = nil,
+    ["object.linger"]    = true,
+    ["node.description"] = "Link created by steam-wire",
+  }
+
+  local link = Link("link-factory", link_args)
+  link:activate(1)
+end
+
+function destroy_link(link)
+  log:trace("Destroying link " .. dump_link(link))
+
+  local _, err = pcall(function() link:request_destroy() end)
+  if err then log:debug("Link " .. dump_link(link) ".. destruction error error: " .. tostring(err)) end
+  return err
+end
+
+
+
+-------------
+--- Debug ---
+-------------
+
+function dump_link(link)
+  local id          = link.properties["object.id"]
+  local source_node = link.properties["link.input.node"]
+  local source_port = link.properties["link.input.port"]
+  local target_node = link.properties["link.output.node"]
+  local target_port = link.properties["link.output.port"]
+  return string.format("Link(Id=%s, Nodes=%s->%s, Ports=%s->%s)",
+      id, source_node, target_node, source_port, target_port)
+end
+
+function dump_port(port)
+  local id        = port.properties["object.id"]
+  local alias     = port.properties["port.alias"]
+  local channel   = port.properties["audio.channel"]
+  local direction = port.properties["port.direction"]
+  local node_id   = port.properties["node.id"]
+  return string.format("Port(Id=%s, Dir=%s, Channel=%s, Node=%s, Alias=%s)",
+      id, direction, channel, node_id, alias)
+end
+
+function dump_node(node)
+  local name    = node.properties["application.name"] or node.properties["node.name"]
+  local binary  = node.properties["application.process.binary"]
+  local class   = node.properties["media.class"]
+  local id      = node.properties["object.id"]
+  return string.format("Node(Id=%s, Class=%s, Binary=%s, Name=%s)",
+        id, class, binary, name)
+end
+
+
+
+-----------------
+--- Interests ---
+-----------------
+
+steam_interest = Interest {
+  type = "node",
+  Constraint { "node.name", "matches", "Null Output", type = "pw" },
+  Constraint { "media.class", "matches", "Audio/Sink", type = "pw" },
+}
+
+sink_interest = Interest {
+  type = "node",
+  Constraint { "media.class", "matches", "Audio/Sink", type = "pw" },
+}
+
+output_ports = Interest {
+  type = "port",
+  Constraint { "object.path", "matches", "alsa_playback.wine-preloader*" },
+  Constraint { "port.direction", "equals", "out" },
+}
+  
+input_ports = Interest {
+  type = "port",
+  Constraint { "port.direction", "equals", "in" },
+}
+
+
+-----------
+--- OMs ---
+-----------
+
+wine_port_om = ObjectManager { output_ports }
+steam_om = ObjectManager { steam_interest }
+sink_om = ObjectManager { sink_interest }
+
+
+------------------------
+--- Wine connections ---
+------------------------
+function wine_link_matching_steam_ports(wine_port, steam_node)
+  print("LUA - SUB3")
+  print(wine_port.properties["object.id"])
+  print(steam_node.properties["object.id"])
+  log:trace(string.format("Checking compatibility of wine port %s with steam node %s",
+      dump_port(wine_port), dump_node(steam_node)))
+
+  for steam_port in steam_node:iterate_ports(input_ports) do
+    log:trace(string.format("Checking compatibility of wine port %s with steam port %s",
+        dump_port(wine_port), dump_port(steam_port)))
+
+    if steam_port.properties["audio.channel"] == wine_port.properties["audio.channel"] then
+      log:info(string.format("Linking port %s with steam node %s", dump_port(wine_port), dump_port(steam_node)))
+      link_ports(steam_port, wine_port)
+    end
+  end
+  print("LUA - /SUB3")
+end
+
+
+
+function connect_exclusive(wine_port, null_node)
+--connect wine_port exclusively to sounding device. "node.nick" property of null device contains PIPEWIRE_WINE_ID@WANTED_SINK_ID.
+  print("LUA - SUB2")
+  log:trace("Processing wine port + null node " .. dump_node(null_node))
+
+  for sink_node in sink_om:iterate() do
+    if wine_port.properties["node.id"] == string.match(null_node.properties["node.nick"],'(.*)@') and sink_node.properties["object.id"] == string.match(null_node.properties["node.nick"],'@(.*)') then
+	  wine_link_matching_steam_ports(wine_port, sink_node)
+	end
+  end
+  print("LUA - /SUB2")
+end
+
+
+
+------------
+--- Main ---
+------------
+print("LUA - MAIN")
+
+wine_port_om:connect("object-added", function(_, wine_port)
+  print("LUA - PORTS DETECTED")
+  for steam_node in steam_om:iterate() do
+    print("LUA - NULL DETECTED")
+    connect_exclusive(wine_port, steam_node)
+  end
+end)
+
+
+wine_port_om:activate()
+sink_om:activate()
+steam_om:activate()
+print("LUA - /MAIN")
