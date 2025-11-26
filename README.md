@@ -14,7 +14,7 @@ WINEPREFIX=~/.wine-staging /opt/wine-staging/bin/winecfg
 ```
 At this point, set:
 
--Windows 7 as OS
+-Windows 7 as OS  
 -Enable VAAPI as backend
 
 -Idk if it is important, but I downloaded this file https://dll.website/download/msvproc_dll_417e414c57cd55fdee5f0bdcf331c967.zip and copied the dll to ~/.wine-staging/drive_c/windows/syswow64
