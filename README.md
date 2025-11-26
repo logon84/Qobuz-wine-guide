@@ -25,7 +25,7 @@ WINEPREFIX=~/.wine-staging WINE=/opt/wine-staging/bin/wine winetricks
 ```
 -->default wine prefix->change settings->sound=alsa
 
-#INSTALL QOBUZ:
+#INSTALL QOBUZ:  
 First, run installer prequisites.sh
 
 Then:
