@@ -56,7 +56,7 @@ Open pavucontrol and change playback device to the "pro" profile.
 
 Copy steam-wire.lua to folder "$HOME/.config/wireplumber/scripts/
 
-#ENJOY
+#ENJOY  
 From now on, open Qobuz using the qobuz_launcher script (hold shift key or run script with -exclusive flag to use exclusive mode). If you have problems choosing output device go to playback settings and turn off "exclusive mode".
 Now you should be able to use Qobuz app from Linux. Be sure to select your audio device as output and play some High-res music.
 Select Max playing quality clicking on the quality section, between volume control and pulseaudio Label.
