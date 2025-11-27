@@ -38,7 +38,7 @@ After logging in, close Qobuz. Edit the Qobuz launcher that the installer create
 ```
 env WINEPREFIX="~/.wine-staging" /opt/wine-staging/bin/wine
 ```
-#PIPEWIRE CONFIG:
+#PIPEWIRE CONFIG:  
 Now check if you have a file named pipewire.conf in ~/.config/pipewire/. If you don't, copy the file from /usr/share/pipewire/pipewire.conf to that folder.
 Open the file and edit the line containing: "#default.clock.allowed-rates"
 
