@@ -72,7 +72,7 @@ Copy steam-wire.lua to folder "$HOME/.config/wireplumber/scripts/
 #ENJOY  
 From now on, open Qobuz using the qobuz_launcher script (hold shift key or run script with -exclusive flag to use exclusive mode). 
 If Qobuz refuses to connect to your desired output device, go to Qobuz settings and turn off "exclusive mode" (in my computer at least, the output device is just called "Out:default"). After that, remember to
-select Max playing quality clicking on the quality section, between volume control and pulseaudio Label.
+select Max playing quality clicking on the quality section, right side of volume control.
 To avoid problems you should set 2 channel audio (stereo) in 50-alsa-config.lua and in winecfg audio tab (env WINEPREFIX="$HOME/.wine-staging" /opt/wine-staging/bin/winecfg).
 
 [![Donate](https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ER2LTNM5LZDTY)  
