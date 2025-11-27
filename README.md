@@ -38,11 +38,14 @@ After logging in, close Qobuz.
 
 #PIPEWIRE CONFIG:  
 Now check if you have a file named pipewire.conf in ~/.config/pipewire/. If you don't, copy the file from /usr/share/pipewire/pipewire.conf to that folder.
-Open the file and edit the line containing: "#default.clock.allowed-rates"
-
+Open the file and edit the line containing:   
+```
+"#default.clock.allowed-rates"
+```
 to
-
+```
 "default.clock.allowed-rates = [ 44100 48000 96000 176400 192000]"
+```
 Depending of your computer power, you probably need to play with quantum settings. In my case, this config is perfect for my old computer:
 ```
 default.clock.quantum       = 16
