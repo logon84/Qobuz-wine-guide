@@ -1,0 +1,11 @@
+Finally found a fix that works for me, mentioned in this bug report: https://bugs.debian.org/cgi-bin/bugrepo ... =867548#52
+
+Edit /etc/default/grub and add
+
+Code: Select all
+
+intel_iommu=on,igfx_off
+
+to the end of the GRUB_CMDLINE_LINUX_DEFAULT option.
+Run update-grub2
+Reboot.
