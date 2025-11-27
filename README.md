@@ -61,3 +61,7 @@ From now on, open Qobuz using the qobuz_launcher script (hold shift key or run s
 Now you should be able to use Qobuz app from Linux. Be sure to select your audio device as output and play some High-res music.
 Select Max playing quality clicking on the quality section, between volume control and pulseaudio Label.
 To avoid problems you should set 2 channel audio (stereo) in 50-alsa-config.lua and in winecfg audio tab (env WINEPREFIX="$HOME/.wine-staging" /opt/wine-staging/bin/winecfg).
+
+[![Donate](https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ER2LTNM5LZDTY)  
+BTC address: 12cQuFn7yMSfDB1uKPGKLMQ7XSj1XF2sVA
+
