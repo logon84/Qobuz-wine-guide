@@ -26,7 +26,7 @@ WINEPREFIX=~/.wine-staging WINE=/opt/wine-staging/bin/wine winetricks
 -->default wine prefix->change settings->sound=alsa
 
 #INSTALL QOBUZ:  
-First, run installer prequisites.sh
+First, run installer_prequisites.sh
 
 Then:
 ```
@@ -68,13 +68,13 @@ Restart the pipewire daemon with:
 ```
 systemctl --user restart wireplumber pipewire pipewire-pulse
 ```
-Open pavucontrol and change playback device to the "pro" profile.
+Open pavucontrol and change playback device to the "Pro Audio" profile.
 
 Copy steam-wire.lua to folder "$HOME/.config/wireplumber/scripts/
 
 #ENJOY  
-From now on, open Qobuz using the qobuz_launcher script (hold shift key or run script with -exclusive flag to use exclusive mode). 
-If Qobuz refuses to connect to your desired output device, go to Qobuz settings and turn off "exclusive mode" (in my computer at least, the output device is just called "Out:default"). After that, remember to
+From now on, open Qobuz using the qobuz_launcher.sh script (hold shift key or run script with -exclusive flag to use exclusive mode). 
+If Qobuz refuses to connect to your desired output device (mine is called Out:default), go to Qobuz settings and turn off "exclusive mode" ("exclusive mode" Qobuz setting is not needed for real exclusive mode under linux). After that, remember to
 select Max playing quality clicking on the quality section, right side of volume control.
 To avoid problems you should set 2 channel audio (stereo) in 50-alsa-config.lua and in winecfg audio tab (env WINEPREFIX="$HOME/.wine-staging" /opt/wine-staging/bin/winecfg).
 
