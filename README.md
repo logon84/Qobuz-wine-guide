@@ -74,7 +74,7 @@ Copy steam-wire.lua to folder "$HOME/.config/wireplumber/scripts/
 
 #ENJOY  
 From now on, open Qobuz using the qobuz_launcher.sh script (hold shift key or run script with -exclusive flag to use exclusive mode). 
-If Qobuz refuses to connect to your desired output device (mine is called Out:default), go to Qobuz settings and turn off "exclusive mode" ("exclusive mode" Qobuz setting is not needed for real exclusive mode under linux). After that, remember to
+Exclusive mode runs outside pipewire server, so you need to choose your playing device inside Qobuz. In non exclusive mode, the alsa device managed by pipewire that you need to choose inside Qobuz is called "Out:default". If Qobuz refuses to connect to your desired output device, go to Qobuz settings and turn off "exclusive mode" ("exclusive mode" Qobuz setting is not needed for real exclusive mode under linux). After that, remember to
 select Max playing quality clicking on the quality section, right side of volume control.
 To avoid problems you should set 2 channel audio (stereo) in 50-alsa-config.lua and in winecfg audio tab (env WINEPREFIX="$HOME/.wine-staging" /opt/wine-staging/bin/winecfg).
 
